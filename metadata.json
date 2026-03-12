@@ -1,0 +1,7 @@
+{
+  "name": "Click Service",
+  "description": "A professional service marketplace connecting clients with providers for maintenance, deliveries, and more.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User profile for both clients and providers",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["client", "provider"] },
+        "category": { "type": "string", "description": "For providers: painting, electrical, etc." },
+        "location": { "type": "object", "properties": { "lat": { "type": "number" }, "lng": { "type": "number" }, "address": { "type": "string" } } },
+        "isSubscribed": { "type": "boolean" },
+        "credits": { "type": "number" },
+        "highlightScore": { "type": "number", "description": "Used for ranking in search" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "ServiceRequest": {
+      "title": "Service Request",
+      "description": "Request from a client to a provider or general listing",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "clientId": { "type": "string" },
+        "providerId": { "type": "string", "description": "Optional if it's a general listing" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "quoted", "accepted", "completed", "cancelled"] },
+        "isBoosted": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clientId", "category", "description", "status"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Financial transactions for subscriptions or credits",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "amount": { "type": "number" },
+        "type": { "type": "string", "enum": ["subscription", "credits_purchase"] },
+        "status": { "type": "string" },
+        "stripeSessionId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "amount", "type", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/requests/{requestId}": {
+      "schema": "ServiceRequest",
+      "description": "Service requests and quotes"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Payment history"
+    }
+  }
+}
